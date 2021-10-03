@@ -10,7 +10,11 @@ export default function App() {
 
 
   const addGoalHandler = goalTitle => {
-    setNewGoals(currentGoals => [...currentGoals, { key: Math.random().toString(), value: goalTitle}]);
+    setNewGoals(currentGoals => [
+      ...currentGoals, 
+      { key: Math.random().toString(), value: goalTitle}
+    ]);
+    setIsAddMode(false);
   }
 
   const removeGoalHandler = goalId => {
@@ -19,10 +23,14 @@ export default function App() {
     });
   }
 
+  const cancelGoalAddHandler = () => {
+    setIsAddMode(false);
+  }
+
   return (
     <View style={styles.screen}>
       <Button title="Add New Goal" onPress={() => setIsAddMode(true)} />
-        <GoalInput onAddGoal={addGoalHandler} visible={isAddMode} />
+        <GoalInput onAddGoal={addGoalHandler} visible={isAddMode} onCancel={cancelGoalAddHandler} />
         <FlatList 
           keyExtractor={(item, index) => item.id} 
           data={newGoals} 
@@ -36,10 +44,5 @@ export default function App() {
 const styles = StyleSheet.create({
   screen: {
     padding: 50
-  },
-  input: {
-    borderBottomColor: 'black', 
-    borderWidth: 1, 
-    width: '80%'
   }
 });
